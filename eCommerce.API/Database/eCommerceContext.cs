@@ -4,18 +4,26 @@ namespace eCommerce.API.Database
 {
     public class eCommerceContext : DbContext
     {
-        public eCommerceContext(DbContextOptions<eCommerceContext> options) : base(options) 
-        {
-        }
+        public eCommerceContext(DbContextOptions<eCommerceContext> options) 
+            : base(options) { }
 
         // Code-First approach
-        public DbSet<User> Users { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
-        public DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
-        public DbSet<Department> Departments { get; set; }
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Contact> Contacts { get; set; } = null!;
+        public DbSet<DeliveryAddress> DeliveryAddresses { get; set; } = null!;
+        public DbSet<Department> Departments { get; set; } = null!;
 
-
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Department>().HasData(
+                new Department { Name = "Mercado" },
+                new Department { Name = "Moda" },
+                new Department { Name = "Informática" },
+                new Department { Name = "Eletrodomésticos" },
+                new Department { Name = "Eletroportáteis" },
+                new Department { Name = "Beleza" }
+            );
+        }
 
 
         #region without environment distinction
