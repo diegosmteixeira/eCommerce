@@ -16,12 +16,12 @@ namespace eCommerce.API.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Department>().HasData(
-                new Department { Name = "Mercado" },
-                new Department { Name = "Moda" },
-                new Department { Name = "Informática" },
-                new Department { Name = "Eletrodomésticos" },
-                new Department { Name = "Eletroportáteis" },
-                new Department { Name = "Beleza" }
+                new Department { Id = 1, Name = "Mercado" },
+                new Department { Id = 2, Name = "Moda" },
+                new Department { Id = 3, Name = "Informática" },
+                new Department { Id = 4, Name = "Eletrodomésticos" },
+                new Department { Id = 5, Name = "Eletroportáteis" },
+                new Department { Id = 6, Name = "Beleza" }
             );
         }
 
