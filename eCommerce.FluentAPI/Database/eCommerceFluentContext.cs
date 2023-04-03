@@ -1,3 +1,4 @@
+using eCommerce.FluentAPI.Configurations;
 using eCommerce.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,17 @@ namespace eCommerce.FluentAPI.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // [ Microsoft.EntityFrameworkCore.Relational ]
+            // ---------------------------------------------------
+            // [ In case of Entity Configuration in other class ]:
+            // ---------------------------------------------------
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            // modelBuilder.ApplyConfiguration(new ContactsConfiguration());
+            // modelBuilder.ApplyConfiguration(new DeliveryAddressesConfiguration());
+            // etc..
+
+            // ----------------------------------------------
+            // [ Microsoft.EntityFrameworkCore.Relational ] : 
+            // ---------------------------------------------- 
 
             // * Table *
             modelBuilder.Entity<User>().ToTable("TB_USERS");
