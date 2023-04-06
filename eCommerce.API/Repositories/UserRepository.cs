@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using eCommerce.API.Database;
 using eCommerce.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace eCommerce.API.Repositories
 {
@@ -38,14 +39,21 @@ namespace eCommerce.API.Repositories
         {
             // OrderBy() before ToList() => db operation *preferable
             // OrderBy() after ToList() => .net c# operation
-            var list = _db.Users.ToList();
+            var list = _db.Users
+                .Include(u => u.Contact)
+                .OrderBy(u => u.Id)
+                .ToList();
             
             return list;
         }
 
         public User Get(int id)
         {
-            return _db.Users.Find(id)!;
+            return _db.Users
+                .Include(u => u.Contact)
+                .Include(u => u.DeliveryAddresses)
+                .Include(u => u.Departments)
+                .FirstOrDefault(u => u.Id == id)!;
         }
 
         public void Update(User user)

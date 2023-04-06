@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace eCommerce.API.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -112,6 +112,19 @@ namespace eCommerce.API.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Departments",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Mercado" },
+                    { 2, "Moda" },
+                    { 3, "Informática" },
+                    { 4, "Eletrodomésticos" },
+                    { 5, "Eletroportáteis" },
+                    { 6, "Beleza" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -12,8 +12,8 @@ using eCommerce.API.Database;
 namespace eCommerce.API.Migrations
 {
     [DbContext(typeof(eCommerceContext))]
-    [Migration("20230401011732_Load01")]
-    partial class Load01
+    [Migration("20230406224710_InitialDB")]
+    partial class InitialDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
