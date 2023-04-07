@@ -18,7 +18,9 @@ namespace eCommerce.API.Repositories
         
         public void Add(User user)
         {
-            // Unit of Works (muliple operations at memory)
+            AddUserDepartments(user);
+
+            // Unit of Works (multiple operations at memory)
             // Local Memory - EF Core
             _db.Users.Add(user);
 
@@ -58,11 +60,56 @@ namespace eCommerce.API.Repositories
 
         public void Update(User user)
         {
+            // TODO - Delete Users.Departments
+            RemoveUserDepartments(user);
+
+            // TODO - Create a new Users.Departments (if needed)
+            AddUserDepartments(user);
+
             // Local Memory - EF Core
             _db.Users.Update(user);
 
             // Memory > DB
             _db.SaveChanges();
+        }
+
+        private void AddUserDepartments(User user)
+        {
+            if (user.Departments != null)
+            {
+                var departments = user.Departments;
+
+                user.Departments = new List<Department>();
+
+                foreach(var department in departments)
+                {
+                    if(department.Id > 0)
+                    {
+                        //Reference to Department that already exists at Table in Database
+                        user.Departments.Add(_db.Departments.Find(department.Id)!);
+                    }
+                    else
+                    {
+                        //Adding a new one Department at Table Departments
+                        user.Departments.Add(department);
+                    }
+                }
+            }
+        }
+
+        private void RemoveUserDepartments(User user)
+        {
+            var dbUser = _db.Users
+                .Include(u => u.Departments)
+                .FirstOrDefault(u => u.Id == user.Id);
+
+            foreach(var department in dbUser!.Departments!)
+            {
+                dbUser.Departments.Remove(department);
+            }
+
+            _db.SaveChanges();
+            _db.ChangeTracker.Clear();
         }
     }
 }
