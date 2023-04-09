@@ -180,3 +180,31 @@ foreach(var user in usersAutoInclude)
     Console.WriteLine($"Name: {user.Name} - Contact: {user.Contact?.Telephone}");
 }
 #endregion
+
+#region Explicit Load
+/* ------------------
+ *   Explict Load
+ * ------------------
+ */ // used when it's needed to load data that already be in the computer memory
+db.ChangeTracker.Clear();
+
+var userExplictLoad = db.Users!.IgnoreAutoIncludes().FirstOrDefault(u => u.Id == 1);
+
+// Reference (load one Entity)
+db.Entry(userExplictLoad).Reference(u => u.Contact).Load();
+
+Console.WriteLine(userExplictLoad.Contact.Telephone);
+
+// Collection (load a Collection)
+db.Entry(userExplictLoad).Collection(u => u.DeliveryAddresses).Load();
+
+Console.WriteLine(userExplictLoad.DeliveryAddresses?.Count);
+
+// Query() returns IQueryable
+var addresses = db.Entry(userExplictLoad).Collection(u => u.DeliveryAddresses)?.Query().Where(a => a.State == "SP").ToList();
+
+foreach(var address in addresses)
+{
+    Console.WriteLine($" -- {address.Street}");
+}
+#endregion
