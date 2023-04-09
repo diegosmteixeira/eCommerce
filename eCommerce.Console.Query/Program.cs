@@ -130,3 +130,53 @@ foreach(var user in orderList)
     Console.WriteLine($"- {user.Name}");
 }
 #endregion
+
+#region Include(), ThenInclude(), AutoInclude()
+Console.WriteLine("USERS LIST .INCLUDE()");
+
+// var userListInclude = db.Users!.Include(user => user.Contact).ToList();
+var userListInclude = db.Users!
+    .Include(u => u.Contact)
+    .Include(u => u.DeliveryAddresses.Where(a => a.State == "SP"))
+    .Include(u => u.Departments)
+    .ToList();
+
+foreach(var user in userListInclude)
+{
+    Console.WriteLine($" - {user.Name}");
+    foreach(var department in user.Departments)
+    {
+        Console.WriteLine($" {department.Name} -- Id: {department.Id}");
+    }
+}
+Console.WriteLine("CONTACTS LIST .THENINCLUDE()");
+
+// var userListInclude = db.Users!.Include(user => user.Contact).ToList();
+var contacts = db.Contacts!
+    .Where(c => c.Id == 1) // contacts that have user Id == 1
+    .Include(c => c.User) // include all users
+    .ThenInclude(u => u.DeliveryAddresses) // include delivery addreses
+    .Include(u => u.User) // back to users to find departmets (EF will not do another JOIN)
+    .ThenInclude(u => u.Departments) // include departments
+    .ToList();
+
+foreach(var contact in contacts)
+{
+    Console.WriteLine($" TEL: {contact.Telephone} - USER: {contact.User.Name} - ADDRESSES: {contact.User.DeliveryAddresses!.Count} - DEP: {contact.User.Departments.Count}");
+}
+
+db.ChangeTracker.Clear();
+
+Console.WriteLine("LIST USING .AUTOINCLUDE()");
+/*
+ * AutoInclude setted at Context
+ */
+var usersAutoInclude = db.Users!
+    .IgnoreAutoIncludes()  // when don't want AutoInclude()
+    .ToList();
+
+foreach(var user in usersAutoInclude)
+{
+    Console.WriteLine($"Name: {user.Name} - Contact: {user.Contact?.Telephone}");
+}
+#endregion
