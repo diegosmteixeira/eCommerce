@@ -1,5 +1,6 @@
 ﻿using System;
 using eCommerce.API.Database;
+using Microsoft.EntityFrameworkCore;
 
 /*
  * EF Core -> Support LINQ > convert to pure SQL
@@ -87,4 +88,45 @@ var max = db.Users.Max(user => user.Id);
 var min = db.Users.Min(user => user.Name);
 
 Console.WriteLine($"Max: {max} - Min: {min}");
+#endregion
+
+#region Where()
+Console.WriteLine(" [ WHERE ] : ");
+// var list = db.Users!.Where(user => user.Id == 1 || user.Name == "Mike AsNoTracking").ToList();
+
+// [ LIKE - SQL ]
+// var userList = db.Users!.Where(user => EF.Functions.Like(user.Name, "%a%")).ToList();
+
+// [ StartsWith ]
+// var userList = db.Users!.Where(user => user.Name.StartsWith("M")).ToList();
+
+// [ EndsWith ]
+var userList = db.Users!.Where(user => user.Name.EndsWith("d")).ToList();
+
+
+foreach(var user in userList)
+{
+    Console.WriteLine($"- {user.Name}");
+}
+#endregion
+
+#region OrderBy(), OrderByDescending(), ThenBy(), ThenByDescending()
+Console.WriteLine(" [ ORDER BY ] : ");
+
+// [ OrderBy alphabet ]
+// var orderList = db.Users!.OrderBy(u => u.Name).ToList();
+
+// [ OrderByDescending ]
+// var orderList = db.Users!.OrderByDescending(u => u.Name).ToList();
+
+// [ ThenBy ]
+// var orderList = db.Users!.OrderBy(u => u.Gender).ThenBy(u => u.Name).ToList();
+
+// [ ThenByDescending ]
+var orderList = db.Users!.OrderBy(u => u.Gender).ThenByDescending(u => u.Name).ToList();
+
+foreach(var user in orderList)
+{
+    Console.WriteLine($"- {user.Name}");
+}
 #endregion
