@@ -33,7 +33,7 @@ var user01 = db.Users!.Find(6);
 Console.WriteLine($" Primary Key: {user01.Id} Name: {user01.Name} ");
 #endregion
 
-#region First(), Last() and Find() - will show exception if has empty value -
+#region First(), Last(), Find(), Single() - will show exception if has empty value -
 var user02 = db.Users.Where(user => user.Name == "Mike AsNoTracking").First();
 
 Console.WriteLine($" First Registry: {user02.Name} ");
@@ -64,3 +64,27 @@ else
 }
 #endregion
 
+#region SingleOrDefault() - if more than one registry => Exception 'Sequence contains more than one element'
+var user05 = db.Users.SingleOrDefault(user => user.Name.Contains("z"));
+
+if(user05 == null)
+{
+    Console.WriteLine("User not found.");
+}
+else
+{
+    Console.WriteLine($" SingleOrDefault() Name: {user04.Name}");
+}
+#endregion
+
+#region Count(), Max(), Min()
+var user06 = db.Users.Where(user => user.Name.Contains("a")).Count();
+
+Console.WriteLine("Count: " + user06);
+
+var max = db.Users.Max(user => user.Id);
+
+var min = db.Users.Min(user => user.Name);
+
+Console.WriteLine($"Max: {max} - Min: {min}");
+#endregion
