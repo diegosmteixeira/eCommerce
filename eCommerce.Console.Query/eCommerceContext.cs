@@ -1,5 +1,6 @@
 using eCommerce.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Proxies;
 
 namespace eCommerce.API.Database
 {
@@ -8,6 +9,7 @@ namespace eCommerce.API.Database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
+                //.UseLazyLoadingProxies()
                 .UseSqlServer("Server=DRACULA;Database=eCommerce;User Id=sa;Password=123456;");
         }
 

@@ -208,3 +208,25 @@ foreach(var address in addresses)
     Console.WriteLine($" -- {address.Street}");
 }
 #endregion
+
+#region Lazy Loading
+
+// 1) [ With Proxies ]
+
+Console.WriteLine("[ LAZY LOADING - With Proxies]");
+db.ChangeTracker.Clear(); // memory clean
+
+var userLazyLoad = db.Users!.Find(1);
+
+Console.WriteLine($" LazyLoad - Name: {userLazyLoad!.Name} - Contact: {userLazyLoad.Contact?.Telephone}");
+
+// ** Be careful with Lazy Load inside a foreach loop (each time that iterates, lazy will access the database) **
+
+// 2) [ Without Proxies ]
+
+Console.WriteLine("[ LAZY LOADING - Without Proxies]");
+// ILazyLoader (EF Core)
+// Delegate (Model -> without class coupling)
+
+Console.WriteLine($" LazyLoad - Name: {userLazyLoad!.Name} - Contact: {userLazyLoad.Contact?.Cellphone}");
+#endregion
