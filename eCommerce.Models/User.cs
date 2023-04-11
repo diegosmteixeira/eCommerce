@@ -4,18 +4,18 @@ namespace eCommerce.Models
 {
     public class User
     {
-        private readonly Action<object, string> LazyLoader;
+        // private readonly Action<object, string> LazyLoader;
         // private readonly ILazyLoader LazyLoader;
 
-        public User()
-        {
+        // public User()
+        // {
 
-        }
+        // }
 
-        public User(Action<object, string> lazyLoader)
-        {
-            LazyLoader = lazyLoader;
-        }
+        // public User(Action<object, string> lazyLoader)
+        // {
+        //     LazyLoader = lazyLoader;
+        // }
         // public User(ILazyLoader lazyLoader)
         // {
         //     LazyLoader = lazyLoader;
@@ -29,13 +29,7 @@ namespace eCommerce.Models
         public string? MotherName { get; set; }
         public string? RegisterSituation { get; set; }
         public DateTimeOffset RegisterDate { get; set; }
-        public Contact? Contact 
-            {
-                get => LazyLoader.Load(this, ref _contact);
-                set => _contact = value;
-            }
-
-        private Contact? _contact;
+        public Contact? Contact {get ; set;}
         public ICollection<DeliveryAddress>? DeliveryAddresses { get; set; }
         public ICollection<Department>? Departments { get; set; }
 
