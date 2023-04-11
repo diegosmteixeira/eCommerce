@@ -267,3 +267,44 @@ foreach(var user in userSelect)
     Console.WriteLine($"- ID: {user.Id} Name: {user.Name} RG: {user.RG} CPF: {user.CPF}");
 }
 #endregion
+
+#region SqlRaw() - Execute with value return
+
+// Select with Index, Filters, more optimized than EF Core
+// View Data
+// Stored Procedures
+// FromSqlInterpolated => protect from sql injection
+db.ChangeTracker.Clear();
+
+Console.WriteLine("SQL RAW - EXECUTING SQL");
+
+// var name = new SqlParameter("@name", "Philip%");  ->> SqlParameter is linked to db infrastructure
+
+var userSqlRaw = db.Users!
+    .FromSqlRaw("SELECT * FROM [Users] WHERE Id >= 1 ORDER BY Id")
+    .IgnoreAutoIncludes()
+    .ToList();
+
+foreach(var user in userSqlRaw)
+{
+    Console.WriteLine($"- ID: {user.Id} Name: {user.Name} RG: {user.RG} CPF: {user.CPF}");
+}
+
+#endregion
+
+#region ExecuteSql - Execute without value return
+// INSERT, UPDATE, DELETE
+// STORED PROCEDURES
+
+// ExecuteSqlInterpolated => protect from Sql Injection
+Console.WriteLine("EXECUTE SQL");
+
+var mother = "Eve";
+db.Database.ExecuteSqlInterpolated($"UPDATE [Users] SET [MotherName]= {mother} WHERE Id = 1");
+Console.WriteLine();
+
+foreach(var user in userSqlRaw)
+{
+    Console.WriteLine($"- ID: {user.Id} Name: {user.Name} RG: {user.RG} CPF: {user.CPF} MOTHER: {user.MotherName}");
+}
+#endregion
