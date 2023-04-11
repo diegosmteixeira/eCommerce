@@ -1,6 +1,7 @@
 ﻿using System;
 using eCommerce.API.Database;
 using Microsoft.EntityFrameworkCore;
+using eCommerce.Models;
 
 /*
  * EF Core -> Support LINQ > convert to pure SQL
@@ -239,4 +240,30 @@ Console.WriteLine("[ SPLIT QUERY ]");
 
 var userSplitQuery = db.Users!.AsSplitQuery().Include(u => u.DeliveryAddresses)?.FirstOrDefault(d => d.Id == 1);
 System.Console.WriteLine($"NAME: {userSplitQuery!.Name} - ADDRESS: {userSplitQuery.DeliveryAddresses?.Count}");
+#endregion
+
+#region Skip() and Take()
+// Take - take a quantity data from db
+// Skip - jump a quantity data from db
+Console.WriteLine("TAKE AND SKIP");
+var userSkipTake = db.Users!.Skip(1).Take(2).ToList();
+foreach(var user in userSkipTake)
+{
+    Console.WriteLine($"-- {user.Name}");
+}
+#endregion
+
+#region Select()
+
+// Column filter to not overload data from multiplous 'joins'
+
+var userSelect = db.Users!
+    .Where(u => u.Id == 1)
+    .Select(u => new User { Id = u.Id, Name = u.Name, RG = u.RG, CPF = u.CPF})
+    .ToList();
+
+foreach(var user in userSelect)
+{
+    Console.WriteLine($"- ID: {user.Id} Name: {user.Name} RG: {user.RG} CPF: {user.CPF}");
+}
 #endregion
