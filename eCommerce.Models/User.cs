@@ -27,17 +27,19 @@ namespace eCommerce.Models
         public string? RG { get; set; }
         public string CPF { get; set; } = null!;
         public string? MotherName { get; set; }
-        public string? RegisterSituation { get; set; }
+
+        public string? RegisterSituation { get;set; }
+        // public Situation RegisterSituation { get; set; }
+        
         public DateTimeOffset RegisterDate { get; set; }
         public Contact? Contact {get ; set;}
         public ICollection<DeliveryAddress>? DeliveryAddresses { get; set; }
         public ICollection<Department>? Departments { get; set; }
 
-        /*
-         * TODO - Class vinculation 
-         * - Contact
-         * - DeliveryAddress
-         * - Department
-         */
+        public enum Situation
+        {
+            Active,
+            Inactive
+        }
     }
 }

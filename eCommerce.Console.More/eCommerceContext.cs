@@ -7,7 +7,7 @@ namespace eCommerce.API.Database
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DRACULA;Database=eCommerce;User Id=sa;Password=123456;");
+            optionsBuilder.UseSqlServer("Server=DRACULA;Database=eCommerceTemp;User Id=sa;Password=123456;");
         }
 
         public DbSet<User> Users { get; set; } = null!;
@@ -17,8 +17,20 @@ namespace eCommerce.API.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Only on SQL SERVER
+            modelBuilder.Entity<User>().ToTable("Users", t => t.IsTemporal(
+                c => {
+                    c.HasPeriodStart("StartTime");
+                    c.HasPeriodEnd("EndTime");
+                    c.UseHistoryTable("UsersHistoric");
+                }
+            ));
+
             // GLOBAL FILTER
             modelBuilder.Entity<User>().HasQueryFilter(u => u.RegisterSituation == "A");
+           
+            // If use Value Conversion (in case RegisterSituation be enum type)
+            modelBuilder.Entity<User>().Property(u => u.RegisterSituation).HasConversion<string>();
         }
     }
 }
