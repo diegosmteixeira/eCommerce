@@ -11,6 +11,9 @@ namespace eCommerce.API.Database
             optionsBuilder
                 //.UseLazyLoadingProxies()
                 .UseSqlServer("Server=DRACULA;Database=eCommerce;User Id=sa;Password=123456;");
+                    // options => options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
+                // .LogTo(System.Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
+                // .EnableSensitiveDataLogging();
         }
 
         // Code-First approach

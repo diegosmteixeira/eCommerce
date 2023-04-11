@@ -230,3 +230,13 @@ Console.WriteLine("[ LAZY LOADING - Without Proxies]");
 
 Console.WriteLine($" LazyLoad - Name: {userLazyLoad!.Name} - Contact: {userLazyLoad.Contact?.Cellphone}");
 #endregion
+
+#region SplitQuery
+
+Console.WriteLine("[ SPLIT QUERY ]");
+
+// .AsSingleQuery() --> when you use split query at Context.OnConfiguring()
+
+var userSplitQuery = db.Users!.AsSplitQuery().Include(u => u.DeliveryAddresses)?.FirstOrDefault(d => d.Id == 1);
+System.Console.WriteLine($"NAME: {userSplitQuery!.Name} - ADDRESS: {userSplitQuery.DeliveryAddresses?.Count}");
+#endregion
